@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+           http://www.springframework.org/schema/aop 
+           http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+           http://www.springframework.org/schema/tx 
+           http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+	
+	<bean id="optionLog" class="com.jyh.utils.OptionLogAspect">
+	</bean>
+
+	<aop:config>
+		<!-- 切入点表达式 ,确定目标类,被代理的类,意思就是调用该类中的方法会触发切面 -->
+		<aop:pointcut expression="execution(* com.jyh.dao.impl..*(..))"
+			id="daoOption"></aop:pointcut>
+
+		<aop:aspect ref="optionLog">
+
+			<!-- 方法调用前的处理,method指向方法,pointcut-ref指向代理对象,也就是上面pointcut元素的id -->
+			<aop:before method="beforeMethod" pointcut-ref="daoOption" />
+
+			<!-- 方法调用后的处理 -->
+			<aop:after-returning method="afterMethod"
+				pointcut-ref="daoOption" returning="val" />
+
+			<!-- 无论有没有成功执行,最终都会调用这个方法 -->
+			<aop:after method="finallyMethod" pointcut-ref="daoOption" />
+
+			<!-- 异常通知 -->
+			<aop:after-throwing method="exceptionMethod"
+				throwing="ex" pointcut-ref="daoOption" />
+
+			<!-- 环绕通知,能控制目标方法执行不执行 -->
+			<aop:around method="aroundMethod" pointcut-ref="daoOption" />
+		</aop:aspect>
+	</aop:config>
+</beans>

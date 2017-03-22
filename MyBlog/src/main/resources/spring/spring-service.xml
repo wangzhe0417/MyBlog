@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+           http://www.springframework.org/schema/aop 
+           http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+           http://www.springframework.org/schema/tx 
+           http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+	<bean id="userService" class="com.jyh.service.impl.UserServiceImpl">
+		<property name="commonDao" ref="userDao"></property>
+		<property name="userDao" ref="userDao"></property>
+	</bean>
+	
+	<bean id="loginLogService" class="com.jyh.service.impl.LoginLogServiceImpl">
+		<property name="commonDao" ref="loginLogDao"></property>
+	</bean>
+	
+	<bean id="articleService" class="com.jyh.service.impl.ArticleServiceImpl">
+		<property name="commonDao" ref="articleDao"></property>
+		<property name="articleDao" ref="articleDao"></property>
+	</bean>
+	
+	<bean id="commentService" class="com.jyh.service.impl.CommentServiceImpl">
+		<property name="commonDao" ref="commentDao"></property>
+		<property name="commentDao" ref="commentDao"></property>
+	</bean>
+	
+	<bean id="collectionService" class="com.jyh.service.impl.CollectionServiceImpl">
+		<property name="commonDao" ref="collectionDao"></property>
+		<property name="collectionDao" ref="collectionDao"></property>
+	</bean>
+	
+	<bean id="attentionService" class="com.jyh.service.impl.AttentionServiceImpl">
+		<property name="commonDao" ref="attentionDao"></property>
+		<property name="attentionDao" ref="attentionDao"></property>
+	</bean>
+	
+	<bean id="personalClassificationService" class="com.jyh.service.impl.PersonalClassificationServiceImpl">
+		<property name="commonDao" ref="personalClassificationDao"></property>
+		<property name="personalClassificationDao" ref="personalClassificationDao"></property>
+	</bean>
+	
+	<bean id="articleClassService" class="com.jyh.service.impl.ArticleClassServiceImpl">
+		<property name="commonDao" ref="articleClassDao"></property>
+	</bean>
+	
+	<bean id="educationService" class="com.jyh.service.impl.EducationServiceImpl">
+		<property name="commonDao" ref="educationDao"></property>
+	</bean>
+	
+	<bean id="workService" class="com.jyh.service.impl.WorkServiceImpl">
+		<property name="commonDao" ref="workDao"></property>
+	</bean>
+	
+	<bean id="dynamicService" class="com.jyh.service.impl.DynamicServiceImpl">
+		<property name="commonDao" ref="dynamicDao"></property>
+		<property name="dynamicDao" ref="dynamicDao"></property>
+	</bean>
+	
+	<bean id="letterService" class="com.jyh.service.impl.LetterServiceImpl">
+		<property name="commonDao" ref="letterDao"></property>
+		<property name="letterDao" ref="letterDao"></property>
+	</bean>
+</beans>

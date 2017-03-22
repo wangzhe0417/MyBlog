@@ -1,0 +1,16 @@
+log4j.logger.com.jyh.utils.OptionLogAspect = INFO, db
+log4j.additivity.com.jyh.utils.OptionLogAspect=false
+log4j.rootLogger = INFO, db, A
+log4j.appender.db=org.apache.log4j.jdbc.JDBCAppender
+log4j.appender.db.BufferSize=10
+log4j.appender.db.driver=com.mysql.jdbc.Driver
+log4j.appender.db.URL=jdbc:mysql://localhost:3306/blog
+log4j.appender.db.user=root
+log4j.appender.db.password=ying1995520***
+log4j.appender.db.sql=insert into option_log (option_id,option_userid,option_username,option_date,option_method,option_class,option_message) values ('%X{id}','%X{userId}','%X{userName}','%d{yyyy-MM-dd HH:mm:ss}','%X{methodName}','%X{className}','%m')
+log4j.appender.db.layout=org.apache.log4j.PatternLayout
+log4j.appender.db.layout.ConversionPattern=%d{yyyy-MM-dd HH:mm:ss} [%c]-[%p] %m%n
+
+log4j.appender.A=org.apache.log4j.ConsoleAppender
+log4j.appender.A.layout=org.apache.log4j.PatternLayout
+log4j.appender.A.layout.ConversionPattern=%d{yyyy-MM-dd HH:mm:ss} [%c]-[%p] %m%n

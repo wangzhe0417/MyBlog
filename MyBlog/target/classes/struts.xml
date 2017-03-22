@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.ui.theme" value="simple"></constant>
+	<constant name="struts.devMode" value="true"/>
+	<constant name="struts.ognl.allowStaticMethodAccess" value="true"></constant>
+	<!-- <constant name="struts.objectFactory" value="spring"/> -->
+	 <!-- 定义一个包，用来进行拦截器的定义初始化 -->
+    <package name="myDefaultPackage" extends="json-default">
+        <!-- 声明定义拦截器 -->
+        <interceptors>
+            <!-- 定义一个拦截器栈 -->
+            <interceptor-stack name="mydefault">
+                <!-- 包含默认的defaultStack栈 -->
+                <interceptor-ref name="defaultStack"></interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+
+        <!-- 覆盖默认的拦截器栈 -->
+        <default-interceptor-ref name="mydefault"></default-interceptor-ref>
+       
+       <action name="*">
+			<result>notFound.jsp</result>
+		</action>
+    </package>
+     
+    <!-- 主页 -->
+    <package name="index" extends="myDefaultPackage">
+        
+		<action name="index" method="index" class="com.jyh.action.ArticleAction">
+			<result>/WEB-INF/Blog/index.jsp</result>
+		</action>
+		
+		<action name="getArticlesList" method="getArticlesList" class="com.jyh.action.ArticleAction">
+			<result name="success">/WEB-INF/Blog/blogList.jsp</result>
+		</action>
+		
+		<action name="articleClass" method="articleClass" class="com.jyh.action.ArticleAction">
+			<result name="success">/WEB-INF/Blog/blogList.jsp</result>
+		</action>
+		
+		<!-- 点击文章标题进入文章详情页面 -->
+		<action name="articleDetail" method="articleDetail" class="com.jyh.action.ArticleAction">
+			<result name="success">/WEB-INF/Blog/myBlog.jsp</result>
+			<result name="error">notFound.jsp</result>
+		</action>
+		
+		<!-- 搜索文章 -->
+		<!-- 点击文章标题进入文章详情页面 -->
+		<action name="searchAllArticle" method="searchAllArticle" class="com.jyh.action.ArticleAction">
+			<result name="success">/WEB-INF/Blog/searchResult.jsp</result>
+			<result name="error">error.jsp</result>
+		</action>
+	</package>
+    	
+   	<!-- 登录页面 -->
+	<package name="login" extends="myDefaultPackage">
+        
+        <action name="loginView">
+			<result>/WEB-INF/Blog/login.jsp</result>
+		</action>
+        
+        <action name="login" method="userLogin" class="com.jyh.action.UserAction">
+            <result name="login" type="json">    
+            	<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+            </result>  
+		</action>
+        
+		<action name="regist" method="userRegist" class="com.jyh.action.UserAction">
+			<result name="login" type="json">    
+				<param name="ignoreHierarchy">false</param>  
+            	<param name="includeProperties">message,state</param>  
+            </result>  
+		</action>
+		
+		<action name="sendMail" method="sendMail" class="com.jyh.action.UserAction">
+			<result name="login" type="json">    
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+            </result>  
+		</action>
+		
+		<action name="nameRepeat" method="nameRepeat" class="com.jyh.action.UserAction">
+			<result name="login" type="json">    
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+            </result>  
+		</action>
+		
+		 <action name="quit" method="quit" class="com.jyh.action.UserAction">
+			<result name="success" type="redirectAction">
+				<param name="namespace">/</param>
+				<param name="actionName">index</param>
+			</result>
+		</action>
+		
+	</package>
+    
+	
+	<!-- 博客管理页面 -->
+	<package name="blogManage" extends="myDefaultPackage">
+        
+		<action name="blogManage" method="blogManage" class="com.jyh.action.ArticleAction">
+			<result name="success">/WEB-INF/Blog/blogManage.jsp</result>
+			<result name="error" type="redirectAction">
+				<param name="namespace">/</param>
+				<param name="actionName">index</param>
+			</result>
+		</action>
+		
+		<!-- 获取文章列表 -->
+		<action name="findMyArticles" method="getMyArticlesListByAjax" class="com.jyh.action.ArticleAction">
+			<result name="success" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 获取用户发表的所有评论 -->
+		<action name="findMyComments" method="findUserComments" class="com.jyh.action.CommentAction">
+			<result name="comment" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 获取用户所有文章下的评论 -->
+		<action name="findMyArticleComments" method="findUserArticlesComments" class="com.jyh.action.CommentAction">
+			<result name="comment" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 获取用户所有文章下的评论 -->
+		<action name="deleteComment" method="deleteComment" class="com.jyh.action.CommentAction">
+			<result name="comment" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 获取用户所有的文章分类 -->
+		<action name="findMyClass" method="findMyClass" class="com.jyh.action.PersonalClassificationAction">
+			<result name="myclass" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 保存我的文章分类 -->
+		<action name="saveMyClass" method="saveMyClass" class="com.jyh.action.PersonalClassificationAction">
+			<result name="myclass" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 删除我的文章分类 -->
+		<action name="deleteMyClass" method="deleteMyClass" class="com.jyh.action.PersonalClassificationAction">
+			<result name="myclass" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 获取我发送的的私信 -->
+		<action name="findMySendLetters" method="findMySendLetters" class="com.jyh.action.LetterAction">
+			<result name="letter" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 获取我接收的私信 -->
+		<action name="findMyReceiveLetters" method="findMyReceiveLetters" class="com.jyh.action.LetterAction">
+			<result name="letter" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 删除私信 -->
+		<action name="deleteLetter" method="deleteLetter" class="com.jyh.action.LetterAction">
+			<result name="letter" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 回复私信 -->
+		<action name="sendLetter" method="sendLetter" class="com.jyh.action.LetterAction">
+			<result name="letter" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 更改账号 -->
+		<action name="updateAccount" method="updateAccount" class="com.jyh.action.UserAction">
+			<result name="account" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+	</package>
+	
+	<!-- 编写博客页面 -->
+	<package name="markdown" extends="myDefaultPackage">
+        
+		<action name="writeArticle" method="writeArticle" class="com.jyh.action.ArticleAction">
+			<result name="success">/WEB-INF/Blog/markdown.jsp</result>
+			<result name="index" type="chain">
+				<param name="namespace">/</param>
+				<param name="actionName">index</param>
+			</result>
+		</action>
+		
+		<action name="saveArticle" method="saveArticle" class="com.jyh.action.ArticleAction">
+			<result name="success" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 上传图片 -->
+		<action name="uploadPicture" method="uploadPicture" class="com.jyh.action.FileAction">
+			<result name="fileUpload" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state,filePath</param>  
+			</result>
+		</action>
+		
+	</package>
+	
+	<!-- 我的博客页面 -->
+	<package name="myBlog" extends="myDefaultPackage">
+        <!-- 进入我的博客页面 -->
+		<action name="myBlogView" method="myBlogView" class="com.jyh.action.ArticleAction">
+			<result name="success">/WEB-INF/Blog/myBlog.jsp</result>
+			<result name="error">error.jsp</result>
+		</action>
+		
+		<!-- 我的全部文章分页 -->
+		<action name="getMyArticlesList" method="getMyArticlesList" class="com.jyh.action.ArticleAction">
+			<result name="success">/WEB-INF/Blog/myBlogList.jsp</result>
+			<result name="error">error.jsp</result>
+		</action>
+		
+		<!-- 搜索 -->
+		<action name="searchArticle" method="searchArticle" class="com.jyh.action.ArticleAction">
+			<result name="success">/WEB-INF/Blog/myBlogList.jsp</result>
+			<result name="error">error.jsp</result>
+		</action>
+		
+		<!-- 按照自己的分类查找文章 -->
+		<action name="myClassArticle" method="myClassArticle" class="com.jyh.action.ArticleAction">
+			<result name="success">/WEB-INF/Blog/myBlogList.jsp</result>
+			<result name="error">error.jsp</result>
+		</action>
+		
+		<!-- 按照日期月份查找文章 -->
+		<action name="myArticleGroupByDate" method="myArticleGroupByDate" class="com.jyh.action.ArticleAction">
+			<result name="success">/WEB-INF/Blog/myBlogList.jsp</result>
+			<result name="error">error.jsp</result>
+		</action>
+		
+		<!-- 从我博客页面查看文章详情 -->
+		<action name="myArticleDetail" method="myArticleDetail" class="com.jyh.action.ArticleAction">
+			<result name="success">/WEB-INF/Blog/articleDetail.jsp</result>
+			<result name="error">error.jsp</result>
+		</action>
+		
+		<!-- 获取评论 -->
+		<action name="getArticleComments" method="getArticleComments" class="com.jyh.action.ArticleAction">
+			<result name="success">/WEB-INF/Blog/articleComments.jsp</result>
+			<result name="error">error.jsp</result>
+		</action>
+		
+		<!-- 发表评论 -->
+		<action name="saveComment" method="saveComment" class="com.jyh.action.CommentAction">
+			<result name="comment" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 删除文章 -->
+		<action name="deleteArticle" method="deleteArticle" class="com.jyh.action.ArticleAction">
+			<result name="deleteArticle" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 收藏文章 -->
+		<action name="collectArticle" method="collectArticle" class="com.jyh.action.CollectionAction">
+			<result name="collection" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 取消收藏 -->
+		<action name="cancelCollection" method="cancelCollection" class="com.jyh.action.CollectionAction">
+			<result name="collection" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+	</package>
+	
+	<!-- 个人中心页面 -->
+	<package name="personalInfo" extends="myDefaultPackage">
+	
+		<!-- 跳转到个人中心页面 -->
+		<action name="personalInfo">
+			<result name="success">/WEB-INF/Blog/personalInfo.jsp</result>
+		</action>
+        
+        <!-- 初始化加载个人中心数据 -->
+		<action name="personalInfoView" method="personalInfo" class="com.jyh.action.UserAction">
+			<result name="personal" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state,attentionId</param>  
+			</result>
+			<result name="error">error.jsp</result>
+		</action>
+		
+		<!-- 保存用户基础数据 -->
+		<action name="saveUser" method="saveUser" class="com.jyh.action.UserAction">
+			<result name="personal" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 保存用户学历背景 -->
+		<action name="saveEducation" method="saveEducation" class="com.jyh.action.UserAction">
+			<result name="personal" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 删除用户学历背景 -->
+		<action name="deleteEducation" method="deleteEducation" class="com.jyh.action.UserAction">
+			<result name="personal" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 保存用户工作经历 -->
+		<action name="saveWork" method="saveWork" class="com.jyh.action.UserAction">
+			<result name="personal" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 删除用户工作经历 -->
+		<action name="deleteWork" method="deleteWork" class="com.jyh.action.UserAction">
+			<result name="personal" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 获取我的动态/我关注的动态  -->
+		<action name="findMyDynamic" method="findMyDynamic" class="com.jyh.action.DynamicAction">
+			<result name="personal" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 获取我关注的人/我关注的人/互相关注的人 -->
+		<action name="getMyAttention" method="getMyAttention" class="com.jyh.action.AttentionAction">
+			<result name="attention" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 关注 -->
+		<action name="attentionUser" method="attentionUser" class="com.jyh.action.AttentionAction">
+			<result name="attention" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+	
+		<!-- 取消关注 -->
+		<action name="cancelAttention" method="cancelAttention" class="com.jyh.action.AttentionAction">
+			<result name="attention" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 获取收藏 -->
+		<action name="getMyCollection" method="findMyCollections" class="com.jyh.action.CollectionAction">
+			<result name="collection" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 取消收藏 -->
+		<action name="deleteCollection" method="cancelCollection" class="com.jyh.action.CollectionAction">
+			<result name="collection" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 选择默认图片为头像 -->
+		<action name="updateImg" method="updateImg" class="com.jyh.action.FileAction">
+			<result name="fileUpload" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+		<!-- 上传头像 -->
+		<action name="uploadImg" method="uploadImg" class="com.jyh.action.FileAction">
+			<result name="fileUpload" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+			
+		<!-- 发送私信 -->
+		<action name="sendLetter" method="sendLetter" class="com.jyh.action.LetterAction">
+			<result name="letter" type="json">
+				<param name="ignoreHierarchy">false</param> 
+            	<param name="includeProperties">message,state</param>  
+			</result>
+		</action>
+		
+	</package>
+
+</struts>
+
