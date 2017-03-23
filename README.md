@@ -10,16 +10,15 @@
   其中编写文章使用的是自制的一个简易markdown编辑器，用marked.js进行markdown语法解析，然后用highlight.js进行语法高亮。
 ## 各模块的功能
 ### 首页
-  #### 主要功能有：
-    显示网站上的所有文章
-    按访问数显示推荐博主
-    显示文章的分类
-    查看文章详情与访问用户博客
-  ### 界面如下：
  ![image](http://github.com/OverrideRe/MyBlog/raw/master/Pictures/Home.png)
 ### 我的博客
+ ![image](http://github.com/OverrideRe/MyBlog/raw/master/Pictures/MyBlog1.png)
+ ![image](http://github.com/OverrideRe/MyBlog/raw/master/Pictures/MyBlog2.png)
+ ![image](http://github.com/OverrideRe/MyBlog/raw/master/Pictures/MyBlog3.png)
 ### 个人中心
+ ![image](http://github.com/OverrideRe/MyBlog/raw/master/Pictures/PersonalInfo.png)
 ### 博客管理
+ ![image](http://github.com/OverrideRe/MyBlog/raw/master/Pictures/BlogManage.png)
 ### 文章编写
-# 遇到的问题与感想
+ ![image](http://github.com/OverrideRe/MyBlog/raw/master/Pictures/Write.png)
 
